@@ -63,7 +63,11 @@
                                       </Group>
                                       <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="tEndDate" min="-2" pref="167" max="-2" attributes="0"/>
+                                          <Group type="102" attributes="0">
+                                              <Component id="tEndDate" min="-2" pref="167" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+                                              <Component id="bReset" min="-2" max="-2" attributes="0"/>
+                                          </Group>
                                           <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
@@ -98,7 +102,10 @@
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Component id="b_tambah" min="-2" max="-2" attributes="0"/>
                       <Component id="tStartDate" min="-2" max="-2" attributes="0"/>
-                      <Component id="tEndDate" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                          <Component id="bReset" min="-2" max="-2" attributes="0"/>
+                          <Component id="tEndDate" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
@@ -245,6 +252,14 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Tanggal"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="bReset">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Reset"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bResetActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

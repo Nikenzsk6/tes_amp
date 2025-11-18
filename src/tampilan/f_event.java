@@ -94,6 +94,7 @@ public class f_event extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         tTanggal = new javax.swing.JLabel();
+        bReset = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -175,6 +176,13 @@ public class f_event extends javax.swing.JFrame {
         tTanggal.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         tTanggal.setText("Tanggal");
 
+        bReset.setText("Reset");
+        bReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bResetActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout p_dasarLayout = new javax.swing.GroupLayout(p_dasar);
         p_dasar.setLayout(p_dasarLayout);
         p_dasarLayout.setHorizontalGroup(
@@ -195,7 +203,10 @@ public class f_event extends javax.swing.JFrame {
                                         .addComponent(jLabel3))
                                     .addGap(38, 38, 38)
                                     .addGroup(p_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(tEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(p_dasarLayout.createSequentialGroup()
+                                            .addComponent(tEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(56, 56, 56)
+                                            .addComponent(bReset))
                                         .addComponent(jLabel4)))))
                         .addContainerGap(35, Short.MAX_VALUE))
                     .addGroup(p_dasarLayout.createSequentialGroup()
@@ -219,7 +230,9 @@ public class f_event extends javax.swing.JFrame {
                 .addGroup(p_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(b_tambah)
                     .addComponent(tStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(p_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(bReset)
+                        .addComponent(tEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -280,15 +293,19 @@ public class f_event extends javax.swing.JFrame {
 
     private void bExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bExportActionPerformed
         // TODO add your handling code here:
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-      
 
         Date awal = tStartDate.getDate();
         Date akhir = tEndDate.getDate();
         Laporan lap = new Laporan();
         lap.generateLaporanEvent(awal, akhir);
     }//GEN-LAST:event_bExportActionPerformed
+
+    private void bResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bResetActionPerformed
+        // TODO add your handling code here:
+         tStartDate.setDate(null);
+        tEndDate.setDate(null);
+        load_table_event();
+    }//GEN-LAST:event_bResetActionPerformed
 
     /**
      * @param args the command line arguments
@@ -328,6 +345,7 @@ public class f_event extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bExport;
+    private javax.swing.JButton bReset;
     private javax.swing.JButton b_tambah;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

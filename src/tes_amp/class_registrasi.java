@@ -198,6 +198,10 @@ public class class_registrasi {
             String tglAwalFormatted = sdf.format(tglAwal);
             String tglAkhirFormatted = sdf.format(tglAkhir);
 
+            // Kirim parameter
+            ps.setString(1, tglAwalFormatted);
+            ps.setString(2, tglAkhirFormatted);
+        
             rs = ps.executeQuery();
 
             int no = 1;
