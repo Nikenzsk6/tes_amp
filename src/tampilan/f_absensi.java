@@ -4,12 +4,7 @@
  */
 package tampilan;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
+
 import javax.swing.table.DefaultTableModel;
 import tes_amp.class_event;
 
@@ -29,47 +24,11 @@ public class f_absensi extends javax.swing.JFrame {
 
     public  void load_table_event() {
         class_event event = new class_event();
-       DefaultTableModel model = event.showEvent();
-       table_event.setModel(model);
-       atur_table();
+        DefaultTableModel model = event.showKegiatan();
+        table_event.setModel(model);
+        event.aturTable(table_event);
     }
 
-    void atur_table() {
-        // Warna lembut untuk header
-        table_event.getTableHeader().setBackground(new Color(102, 204, 255)); // biru pucat (baby blue)
-        table_event.getTableHeader().setForeground(Color.BLACK);
-        table_event.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
-
-        // Warna sel tabel (hitam putih natural)
-        table_event.setBackground(Color.WHITE);
-        table_event.setForeground(Color.BLACK);
-        table_event.setGridColor(Color.LIGHT_GRAY);
-        table_event.setSelectionBackground(new Color(220, 240, 255)); // biru muda saat dipilih
-        table_event.setSelectionForeground(Color.BLACK);
-
-        // === Mengatur rata tengah teks di tabel ===
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-
-        // Rata tengah untuk semua kolom
-        for (int i = 0; i < table_event.getColumnCount(); i++) {
-            table_event.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
-
-        // Rata tengah header kolom juga
-        ((DefaultTableCellRenderer) table_event.getTableHeader().getDefaultRenderer())
-                .setHorizontalAlignment(SwingConstants.CENTER);
-
-        // Mengatur lebar kolom
-        table_event.getColumnModel().getColumn(0).setPreferredWidth(30);  // No
-        table_event.getColumnModel().getColumn(1).setPreferredWidth(100); // ID Kegiatan
-        table_event.getColumnModel().getColumn(2).setPreferredWidth(150); // Nama Kegiatan
-        table_event.getColumnModel().getColumn(3).setPreferredWidth(100); // Tanggal Mulai
-        table_event.getColumnModel().getColumn(4).setPreferredWidth(100); // Tanggal Selesai
-        table_event.getColumnModel().getColumn(5).setPreferredWidth(100); // Lokasi
-        table_event.getColumnModel().getColumn(6).setPreferredWidth(100); // Jenis Kegiatan
-        table_event.getColumnModel().getColumn(7).setPreferredWidth(180); // Keterangan
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -122,9 +81,9 @@ public class f_absensi extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 598, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addContainerGap(19, Short.MAX_VALUE))
+                    .addComponent(jLabel2)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 861, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,9 +106,9 @@ public class f_absensi extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(303, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 903, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

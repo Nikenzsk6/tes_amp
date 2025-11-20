@@ -29,7 +29,7 @@ public class f_hasil extends javax.swing.JFrame {
 
     public  void load_table_event() {
         class_event event = new class_event();
-       DefaultTableModel model = event.showEvent();
+       DefaultTableModel model = event.showKegiatan();
        table_event.setModel(model);
        atur_table();
     }

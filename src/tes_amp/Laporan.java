@@ -9,6 +9,7 @@ import com.itextpdf.text.pdf.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -47,6 +48,7 @@ public class Laporan {
             Paragraph title = new Paragraph(titleText, fontTitle);
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
+            document.add(new Paragraph(" "));
             document.add(new Paragraph(" "));
 
             // Extra header lines (nama event, tanggal mulai, dll.)
@@ -120,6 +122,8 @@ public class Laporan {
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
 
+            document.add(new Paragraph(" "));
+
             if (Periode != null) {
                 document.add(new Paragraph(Periode, fontSub));
             }
@@ -159,7 +163,8 @@ public class Laporan {
             ));
 
             document.close();
-            System.out.println("PDF berhasil dibuat: " + path);
+            JOptionPane.showMessageDialog(null, "PDF berhasil dibuat");
+//            System.out.println("PDF berhasil dibuat: " + path);
 
         } catch (Exception e) {
             System.out.println(e);
@@ -176,7 +181,7 @@ public class Laporan {
             String[] tableHeaders = {"No", "ID Anggota", "Nama Anggota", "Status"};
 
             // Lebar kolom
-            float[] widths = {1f, 3f, 5f, 3f};
+            float[] widths = {0.5f, 2f, 5f, 1f};
 
             // Nama file (otomatis dengan tanggal)
             String tanggal = new java.text.SimpleDateFormat("yyyy-MM-dd")
@@ -186,8 +191,8 @@ public class Laporan {
             // Panggil method generik
             formatDetailRegistrasi(fileName, "Laporan Detail Registrasi",
                     List.of(
-                            "Nama Kegiatan : " + lbNama,
-                            "tanggal Mulai : " + lbTgl), tableHeaders, widths, model
+                            "Nama Kegiatan : " + lbNama.getText(),
+                            "tanggal Mulai : " + lbTgl.getText()), tableHeaders, widths, model
             );
 
         } catch (Exception e) {
@@ -199,15 +204,37 @@ public class Laporan {
     public void generateLaporanEvent(Date tglAwal, Date tglAkhir) {
         try {
             class_event event = new class_event();
-            DefaultTableModel model = event.filterTable(tglAwal, tglAkhir);
+            DefaultTableModel model;
+
+            boolean isFiltered = (tglAwal != null && tglAkhir != null);
+
+            // Tentukan model berdasarkan filter
+            if (isFiltered) {
+                model = event.filterTable(tglAwal, tglAkhir);
+            } else {
+                model = event.showKegiatan(); // tanpa filter
+            }
 
             // Format tanggal hari ini (YYYY-MM-DD)
             String tanggal = new java.text.SimpleDateFormat("yyyy-MM-dd")
                     .format(new java.util.Date());
 
             // nama file
-            String fileName = "Laporan_Data_Event_PORSIGAL_" + tanggal + ".pdf";
+            String fileName;
 
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String tglAwalFormatted = sdf.format(tglAwal);
+            String tglAkhirFormatted = sdf.format(tglAkhir);
+            String periode;
+            // Tentukan periode berdasarkan filter
+            if (isFiltered) {
+                periode = "Rentang: " + tglAwalFormatted + " s/d " + tglAkhirFormatted;
+                fileName = "Laporan_Event_Filter_PORSIGAL_" + tanggal + ".pdf";
+
+            } else {
+                periode = "Rentang: - s/d - "; // tanpa filter
+                fileName = "Laporan_Event_All_PORSIGAL_" + tanggal + ".pdf";
+            }
             // Lebar kolom
             float[] widths = {1f, 3f, 5f, 3f, 3f, 3f, 3f, 5f};
 
@@ -215,8 +242,6 @@ public class Laporan {
                 "No", "ID Kegiatan", "Nama Kegiatan", "Tanggal Mulai",
                 "Tanggal Selesai", "Lokasi", "Jenis", "Keterangan"
             };
-
-            String periode = "Rentang: " + tglAwal + " s/d " + tglAkhir;
 
             formatLaporan(fileName, "Laporan Data Event PORSIGAL", periode, headers, widths, model);
         } catch (Exception e) {
@@ -228,15 +253,38 @@ public class Laporan {
     public void generateLaporanRegistrasi(Date tglAwal, Date tglAkhir) {
 
         try {
-           class_registrasi regis = new class_registrasi();
+            class_registrasi regis = new class_registrasi();
+            class_event event = new class_event();
             DefaultTableModel model = regis.filterTable(tglAwal, tglAkhir);
 
+            boolean isFiltered = (tglAwal != null && tglAkhir != null);
+
+            // Tentukan model berdasarkan filter
+            if (isFiltered) {
+                model = regis.filterTable(tglAwal, tglAkhir);
+            } else {
+                model = event.showRegistrasi(); // tanpa filter
+            }
             // Format tanggal hari ini (YYYY-MM-DD)
             String tanggal = new java.text.SimpleDateFormat("yyyy-MM-dd")
                     .format(new java.util.Date());
 
             // nama file
-            String fileName = "Laporan_Data_Registrasi_PORSIGAL_" + tanggal + ".pdf";
+            String fileName;
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String tglAwalFormatted = sdf.format(tglAwal);
+            String tglAkhirFormatted = sdf.format(tglAkhir);
+            String periode;
+            // Tentukan periode berdasarkan filter
+            if (isFiltered) {
+                periode = "Rentang: " + tglAwalFormatted + " s/d " + tglAkhirFormatted;
+                fileName = "Laporan_registrasi_Filter_PORSIGAL_" + tanggal + ".pdf";
+
+            } else {
+                periode = "Rentang: - s/d - "; // tanpa filter
+                fileName = "Laporan_Regostrasi_All_PORSIGAL_" + tanggal + ".pdf";
+            }
 
             // Lebar kolom
             float[] widths = {1f, 3f, 5f, 3f, 3f, 3f, 3f, 5f};
@@ -245,9 +293,6 @@ public class Laporan {
                 "No", "ID Kegiatan", "Nama Kegiatan", "Tanggal Mulai",
                 "Tanggal Selesai", "Lokasi", "Jenis", "Keterangan"
             };
-
-            String periode = "Rentang: " + tglAwal + " s/d " + tglAkhir;
-
             formatLaporan(fileName, "Laporan Data Registrasi PORSIGAL", periode, headers, widths, model);
 
         } catch (Exception e) {

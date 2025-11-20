@@ -190,6 +190,42 @@ public class class_event {
         return model;
 
     }
+    
+    public DefaultTableModel showKegiatan() {
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("No");
+        model.addColumn("ID Kegiatan");
+        model.addColumn("Nama Kegiatan");
+        model.addColumn("Tanggal Mulai");
+        model.addColumn("Tanggal Selesai");
+        model.addColumn("Lokasi");
+        model.addColumn("Jenis Kegiatan");
+        model.addColumn("Keterangan");
+
+        try {
+            query = "SELECT * FROM event_ujian WHERE jenis != 'Registrasi'";
+            st = con.createStatement();
+            rs = st.executeQuery(query);
+
+            int no = 1;
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    no++,
+                    rs.getString("ID_event"),
+                    rs.getString("nama_event"),
+                    rs.getString("tgl_mulai"),
+                    rs.getString("tgl_selesai"),
+                    rs.getString("lokasi"),
+                    rs.getString("jenis"),
+                    rs.getString("keterangan")
+                });
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return model;
+
+    }
 
     public String getIdEventByName(String namaEvent) {
         String idEvent = "";
@@ -210,42 +246,42 @@ public class class_event {
         return idEvent;
     }
 
-    public DefaultTableModel showEvent() {
-        DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("No");
-        model.addColumn("ID Kegiatan");
-        model.addColumn("Nama Kegiatan");
-        model.addColumn("Tanggal Mulai");
-        model.addColumn("Tanggal Selesai");
-        model.addColumn("Lokasi");
-        model.addColumn("Jenis Kegiatan");
-        model.addColumn("Keterangan");
-
-        try {
-            query = "SELECT * FROM event_ujian";
-
-            st = con.createStatement();
-            rs = st.executeQuery(query);
-
-            int no = 1;
-            while (rs.next()) {
-                model.addRow(new Object[]{
-                    no++,
-                    rs.getString("ID_event"),
-                    rs.getString("nama_event"),
-                    rs.getString("tgl_mulai"),
-                    rs.getString("tgl_selesai"),
-                    rs.getString("lokasi"),
-                    rs.getString("jenis"),
-                    rs.getString("keterangan")
-                });
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-
-        return model;
-    }
+//    public DefaultTableModel showEvent() {
+//        DefaultTableModel model = new DefaultTableModel();
+//        model.addColumn("No");
+//        model.addColumn("ID Kegiatan");
+//        model.addColumn("Nama Kegiatan");
+//        model.addColumn("Tanggal Mulai");
+//        model.addColumn("Tanggal Selesai");
+//        model.addColumn("Lokasi");
+//        model.addColumn("Jenis Kegiatan");
+//        model.addColumn("Keterangan");
+//
+//        try {
+//            query = "SELECT * FROM event_ujian";
+//
+//            st = con.createStatement();
+//            rs = st.executeQuery(query);
+//
+//            int no = 1;
+//            while (rs.next()) {
+//                model.addRow(new Object[]{
+//                    no++,
+//                    rs.getString("ID_event"),
+//                    rs.getString("nama_event"),
+//                    rs.getString("tgl_mulai"),
+//                    rs.getString("tgl_selesai"),
+//                    rs.getString("lokasi"),
+//                    rs.getString("jenis"),
+//                    rs.getString("keterangan")
+//                });
+//            }
+//        } catch (SQLException e) {
+//            System.out.println(e);
+//        }
+//
+//        return model;
+//    }
 
     public DefaultTableModel filterTable(Date tglAwal, Date tglAkhir) {
         DefaultTableModel model = new DefaultTableModel();
@@ -259,7 +295,7 @@ public class class_event {
         model.addColumn("Keterangan");
 
         try {
-            query = "SELECT * FROM event_ujian WHERE tgl_mulai BETWEEN ? AND ? ";
+            query = "SELECT * FROM event_ujian WHERE tgl_mulai BETWEEN ? AND ? AND jenis != 'Registrasi'";
 
             ps = con.prepareStatement(query);
             // Convert java.util.Date → java.sql.Date

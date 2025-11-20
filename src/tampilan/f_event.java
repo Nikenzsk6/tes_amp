@@ -4,17 +4,9 @@
  */
 package tampilan;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
+
 import java.util.Date;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import static tampilan.f_registrasi.currentDate;
 import tes_amp.Laporan;
 import tes_amp.class_event;
 
@@ -23,7 +15,7 @@ import tes_amp.class_event;
  * @author HP
  */
 
-public class f_event extends javax.swing.JFrame {
+public final class f_event extends javax.swing.JFrame {
     /**
      * Creates new form event
      */
@@ -35,7 +27,7 @@ public class f_event extends javax.swing.JFrame {
 
    public void load_table_event(){
        class_event event = new class_event();
-       DefaultTableModel model = event.showEvent();
+       DefaultTableModel model = event.showKegiatan();
        table_event.setModel(model);
        event.aturTable(table_event);
    }

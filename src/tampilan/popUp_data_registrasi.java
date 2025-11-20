@@ -198,6 +198,7 @@ public class popUp_data_registrasi extends javax.swing.JFrame {
         // TODO add your handling code here:
         class_event event = new class_event();
         String namaKegiatan = lb_kegiatan.getText();
+        String tglMulai = lb_tgl.getText();
         String idKegiatan = event.getIdEventByName(namaKegiatan);
         
         //cetak laporan
