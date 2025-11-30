@@ -30,7 +30,9 @@ public class popUp_tambah_registrasi extends javax.swing.JFrame {
     public popUp_tambah_registrasi(String idKegiatan) {
         initComponents();
         setTableModel();
-        autoID(idKegiatan);
+
+        class_registrasi regis = new class_registrasi();
+        regis.autoIDDetail(lbl_id);
         reset();
     }
 
@@ -60,23 +62,16 @@ public class popUp_tambah_registrasi extends javax.swing.JFrame {
         lbl_Kegiatan.setText(namaKegiatan);
     }
 
-    String idKegiatan(String namaKegiatan) {
+    String konversiID(String namaRegis) {
+        String id = "";
         try {
-            String sql = "SELECT * FROM event_ujian WHERE nama_event=?";
-            Connection con = koneksi.konek();
-            //  Statement st = con.createStatement();
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, namaKegiatan);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                return rs.getString("ID_event");
-            }
-        } catch (SQLException e) {
-            //jika error. kembali string kosong
+            class_registrasi regis = new class_registrasi();
+            id = regis.konversIDRegis(namaRegis);
+        } catch (Exception e) {
+            System.out.println(e);
             return "";
         }
-        return "";
+        return id;
     }
 
     /**
@@ -167,7 +162,7 @@ public class popUp_tambah_registrasi extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setText("ID Registrasi     :");
+        jLabel4.setText("ID Detail Registrasi     :");
 
         lbl_id.setText(".........");
 
@@ -215,17 +210,21 @@ public class popUp_tambah_registrasi extends javax.swing.JFrame {
                                     .addComponent(t_status, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(b_tambah))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pn_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel1)
-                                .addGroup(pn_dasarLayout.createSequentialGroup()
-                                    .addGroup(pn_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(pn_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lbl_id, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lbl_Kegiatan, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pn_dasarLayout.createSequentialGroup()
+                                .addGroup(pn_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pn_dasarLayout.createSequentialGroup()
+                                        .addGroup(pn_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(pn_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lbl_id, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(lbl_Kegiatan, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pn_dasarLayout.createSequentialGroup()
+                                        .addGap(52, 52, 52)
+                                        .addComponent(jLabel1)))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(26, 26, 26))
         );
         pn_dasarLayout.setVerticalGroup(
@@ -283,8 +282,10 @@ public class popUp_tambah_registrasi extends javax.swing.JFrame {
         // TODO add your handling code here:
         class_registrasi regis = new class_registrasi();
 
-        regis.setIdRegistrasi(lbl_id.getText());
-        regis.setIdKegiatan(idKegiatan(lbl_Kegiatan.getText()));
+        regis.setIdDetailRegistrasi(lbl_id.getText());
+        regis.setIdRegitrasi(konversiID(lbl_Kegiatan.getText()));
+
+        boolean status = true;
         try {
             for (String[] item : daftarAnggota) {
                 String namaAnggota = item[1];
@@ -299,31 +300,33 @@ public class popUp_tambah_registrasi extends javax.swing.JFrame {
                     if (rs.next()) {
                         String idAnggota = rs.getString("ID_anggota");
                         regis.setIdAnggota(idAnggota);
-                        regis.simpanRegis();
+                        boolean sukses = regis.simpanDetailRegis();
 
+                        if (!sukses) {
+                            status = false;
+                        }
                     }
-                    rs.close();
-                    ps.close();
-                    con.close();
-                    
                 } catch (SQLException e) {
-                    //jika error. kembali string kosong
                     System.out.println(e);
                 }
             }
-            // 🧹 Reset daftarAnggota agar kosong untuk input berikutnya
-                    daftarAnggota.clear();
+            if (status) {
+                JOptionPane.showMessageDialog(null, "Data Berhasil Disimpan");
+            } else {
+                JOptionPane.showMessageDialog(null, "Data Gagal Disimpan");
+            }
 
-                    // 🧹 Reset tampilan tabel (hapus semua baris)
-                    DefaultTableModel model = (DefaultTableModel) table_peserta.getModel();
-                    model.setRowCount(0);
-            JOptionPane.showMessageDialog(null, "Data Berhasil Disimpan");
+            // 🧹 Reset daftarAnggota agar kosong untuk input berikutnya
+            daftarAnggota.clear();
+
+            // 🧹 Reset tampilan tabel (hapus semua baris)
+            DefaultTableModel model = (DefaultTableModel) table_peserta.getModel();
+            model.setRowCount(0);
 
         } catch (Exception e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Data Gagal Disimpan");
         }
-        
+
     }//GEN-LAST:event_b_simpanActionPerformed
 
     private void b_cariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_cariActionPerformed
@@ -348,7 +351,7 @@ public class popUp_tambah_registrasi extends javax.swing.JFrame {
 
     private void bDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDetailActionPerformed
         // TODO add your handling code here:
-        String idRegis = lbl_id.getText(); // ambil ID registrasi dari label
+        String idRegis = konversiID(lbl_Kegiatan.getText()); // ambil ID registrasi dari label
 
         popUp_data_registrasi detail_regis = new popUp_data_registrasi(); // kirim ke frame kedua
         detail_regis.setVisible(true);
@@ -360,51 +363,6 @@ public class popUp_tambah_registrasi extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_bBackActionPerformed
 
-    private void autoID(String idKegiatan) {
-        try {
-        Connection con = koneksi.konek();
-        String sqlCek = "SELECT ID_registrasi FROM registrasi r " +
-                        "JOIN event_ujian e ON r.ID_event_ujian = e.ID_event " +
-                        "WHERE e.ID_event = ? " +
-                        "AND CURDATE() BETWEEN e.tgl_mulai AND e.tgl_selesai " +
-                        "LIMIT 1";
-        PreparedStatement psCek = con.prepareStatement(sqlCek);
-        psCek.setString(1, idKegiatan);
-        ResultSet rsCek = psCek.executeQuery();
-
-        String idRegistrasi;
-
-        if (rsCek.next()) {
-            // Jika sudah ada registrasi untuk kegiatan ini di periode aktif
-            idRegistrasi = rsCek.getString("ID_registrasi");
-        } else {
-            // Kalau belum ada, buat ID baru berdasarkan ID terbesar
-            String sqlMax = "SELECT MAX(ID_registrasi) FROM registrasi";
-            Statement st = con.createStatement();
-            ResultSet rsMax = st.executeQuery(sqlMax);
-
-            int nextNum = 1;
-            if (rsMax.next() && rsMax.getString(1) != null) {
-                String maxID = rsMax.getString(1);
-                nextNum = Integer.parseInt(maxID.substring(3)) + 1;
-            }
-
-            idRegistrasi = String.format("REG%03d", nextNum);
-            rsMax.close();
-            st.close();
-        }
-
-        lbl_id.setText(idRegistrasi);
-
-        rsCek.close();
-        psCek.close();
-        con.close();
-
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Error saat generate ID Registrasi: " + e.getMessage());
-        e.printStackTrace();
-    }
-    }
 
     /**
      * @param args the command line arguments
@@ -434,7 +392,7 @@ public class popUp_tambah_registrasi extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-     /*   java.awt.EventQueue.invokeLater(new Runnable() {
+ /*   java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new popUp_tambah_registrasi().setVisible(true);
             }

@@ -5,6 +5,7 @@
 package tampilan;
 
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 import tes_amp.Laporan;
@@ -23,6 +24,10 @@ public final class f_event extends javax.swing.JFrame {
         initComponents();
         load_table_event();
         setTanggalListener();
+        
+        Date sekarang = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        tTanggal.setText(sdf.format(sekarang));
     }
 
    public void load_table_event(){
@@ -31,7 +36,8 @@ public final class f_event extends javax.swing.JFrame {
        table_event.setModel(model);
        event.aturTable(table_event);
    }
-
+   
+  
    private void filterTGL(){
        Date tglAwal = tStartDate.getDate();
        Date tglAkhir = tEndDate.getDate();
@@ -60,6 +66,7 @@ public final class f_event extends javax.swing.JFrame {
                 }
             });
    }
+   
    
     
    
@@ -104,6 +111,9 @@ public final class f_event extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(250, 240, 230));
 
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
         table_event.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {}
@@ -134,8 +144,8 @@ public final class f_event extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 867, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(26, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 810, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(83, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -204,7 +214,7 @@ public final class f_event extends javax.swing.JFrame {
                     .addGroup(p_dasarLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(tTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(111, 111, 111))))
         );
         p_dasarLayout.setVerticalGroup(
@@ -264,22 +274,19 @@ public final class f_event extends javax.swing.JFrame {
             Object tglMulaiobj = table_event.getValueAt(baris, 3);
             Object tglAkhirobj = table_event.getValueAt(baris, 4);
             Object lokasiobj = table_event.getValueAt(baris, 5).toString();
-            Object kategoriobj = table_event.getValueAt(baris, 6).toString();
-            Object keteranganobj = table_event.getValueAt(baris, 7).toString();
+            Object pelatihobj = table_event.getValueAt(baris, 6).toString();
             
             // Mengonversi objek menjadi string, jika null maka hasilnya null atau string kosong
             String nama = (namaobj !=null)? namaobj.toString() : null;
             String tglMulai = (tglMulaiobj != null) ? tglMulaiobj.toString() : null;
             String tglAkhir = (tglAkhirobj != null) ? tglAkhirobj.toString() : null;
             String lokasi = (lokasiobj !=null)? lokasiobj.toString() : null;
-            String kategori = (kategoriobj !=null)? kategoriobj.toString() : null;
-            String keterangan = (keteranganobj !=null)? keteranganobj.toString() : null;
+            String pelatih = (pelatihobj !=null)? pelatihobj.toString() : null;
         
             popUp_tambah_event edit = new popUp_tambah_event(this);
-            edit.tampil_data(id, nama, tglMulai, tglAkhir, lokasi, kategori, keterangan);
+            edit.tampil_data(id, nama, tglMulai, tglAkhir, lokasi, pelatih);
             edit.setVisible(true);
-            edit.tampilan_edit_event();
-            
+            edit.tampilan_edit_event();   
         }
     }//GEN-LAST:event_table_eventMouseClicked
 

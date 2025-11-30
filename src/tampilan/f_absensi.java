@@ -6,6 +6,7 @@ package tampilan;
 
 
 import javax.swing.table.DefaultTableModel;
+import tes_amp.absensi_ujian;
 import tes_amp.class_event;
 
 /**
@@ -138,7 +139,20 @@ public class f_absensi extends javax.swing.JFrame {
 
     private void table_eventMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_eventMouseClicked
         // TODO add your handling code here:
+        int baris = table_event.rowAtPoint(evt.getPoint());
         
+        if(baris >=0){
+            String id = table_event.getValueAt(baris, 1).toString();
+            String nama_event = table_event.getValueAt(baris, 2).toString();
+            String penguji = table_event.getValueAt(baris, 6).toString();
+            
+            absensi_ujian absenujian = new absensi_ujian();
+            String idRegis = absenujian.getIDregistrasi(id);
+            
+            popUp_absensi_ujian absen = new popUp_absensi_ujian(idRegis);
+            absen.setVisible(true);
+            absen.tampilData(nama_event, penguji); 
+        }
     }//GEN-LAST:event_table_eventMouseClicked
 
     /**

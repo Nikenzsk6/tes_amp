@@ -223,24 +223,26 @@ public class Laporan {
             String fileName;
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String tglAwalFormatted = sdf.format(tglAwal);
-            String tglAkhirFormatted = sdf.format(tglAkhir);
+
             String periode;
             // Tentukan periode berdasarkan filter
             if (isFiltered) {
+                String tglAwalFormatted = sdf.format(tglAwal);
+                String tglAkhirFormatted = sdf.format(tglAkhir);
+                
                 periode = "Rentang: " + tglAwalFormatted + " s/d " + tglAkhirFormatted;
-                fileName = "Laporan_Event_Filter_PORSIGAL_" + tanggal + ".pdf";
+                fileName = "Laporan_Ujian_Filter_PORSIGAL_" + tanggal + ".pdf";
 
             } else {
                 periode = "Rentang: - s/d - "; // tanpa filter
-                fileName = "Laporan_Event_All_PORSIGAL_" + tanggal + ".pdf";
+                fileName = "Laporan_Ujian_All_PORSIGAL_" + tanggal + ".pdf";
             }
             // Lebar kolom
-            float[] widths = {1f, 3f, 5f, 3f, 3f, 3f, 3f, 5f};
+            float[] widths = {1f, 3f, 5f, 3f, 3f, 3f, 5f};
 
             String[] headers = {
                 "No", "ID Kegiatan", "Nama Kegiatan", "Tanggal Mulai",
-                "Tanggal Selesai", "Lokasi", "Jenis", "Keterangan"
+                "Tanggal Selesai", "Lokasi", "Penguji"
             };
 
             formatLaporan(fileName, "Laporan Data Event PORSIGAL", periode, headers, widths, model);
@@ -254,7 +256,6 @@ public class Laporan {
 
         try {
             class_registrasi regis = new class_registrasi();
-            class_event event = new class_event();
             DefaultTableModel model = regis.filterTable(tglAwal, tglAkhir);
 
             boolean isFiltered = (tglAwal != null && tglAkhir != null);
@@ -263,7 +264,7 @@ public class Laporan {
             if (isFiltered) {
                 model = regis.filterTable(tglAwal, tglAkhir);
             } else {
-                model = event.showRegistrasi(); // tanpa filter
+                model = regis.showRegistrasi(); // tanpa filter
             }
             // Format tanggal hari ini (YYYY-MM-DD)
             String tanggal = new java.text.SimpleDateFormat("yyyy-MM-dd")
@@ -273,25 +274,27 @@ public class Laporan {
             String fileName;
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String tglAwalFormatted = sdf.format(tglAwal);
-            String tglAkhirFormatted = sdf.format(tglAkhir);
+
             String periode;
             // Tentukan periode berdasarkan filter
             if (isFiltered) {
+                String tglAwalFormatted = sdf.format(tglAwal);
+                String tglAkhirFormatted = sdf.format(tglAkhir);
+                
                 periode = "Rentang: " + tglAwalFormatted + " s/d " + tglAkhirFormatted;
-                fileName = "Laporan_registrasi_Filter_PORSIGAL_" + tanggal + ".pdf";
+                fileName = "Laporan_Registrasi_Filter_PORSIGAL_" + tanggal + ".pdf";
 
             } else {
                 periode = "Rentang: - s/d - "; // tanpa filter
-                fileName = "Laporan_Regostrasi_All_PORSIGAL_" + tanggal + ".pdf";
+                fileName = "Laporan_Registrasi_All_PORSIGAL_" + tanggal + ".pdf";
             }
 
             // Lebar kolom
-            float[] widths = {1f, 3f, 5f, 3f, 3f, 3f, 3f, 5f};
+            float[] widths = {1f, 3f, 5f, 3f, 3f, 3f, 5f};
 
             String[] headers = {
                 "No", "ID Kegiatan", "Nama Kegiatan", "Tanggal Mulai",
-                "Tanggal Selesai", "Lokasi", "Jenis", "Keterangan"
+                "Tanggal Selesai", "Lokasi", "Penguji"
             };
             formatLaporan(fileName, "Laporan Data Registrasi PORSIGAL", periode, headers, widths, model);
 
